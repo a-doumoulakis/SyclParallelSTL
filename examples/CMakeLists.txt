@@ -1,7 +1,10 @@
+
+find_package(Threads)
+
 file(GLOB BENCHMARK_FILES ./*.cpp)
 
-foreach(file ${BENCHMARK_FILES})
-
+foreach(file ${BENCHMARK_FILES})  
+  
   message(STATUS " Getting ${file} ")
 
   get_filename_component(SOURCE_NAME ${file} NAME_WE)
@@ -10,6 +13,7 @@ foreach(file ${BENCHMARK_FILES})
   include_directories(${COMPUTECPP_INCLUDE_DIRECTORY})
 
   add_executable(${SOURCE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE_NAME}.cpp  )
+  target_link_libraries(${SOURCE_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
   target_compile_options(${SOURCE_NAME} PUBLIC ${HOST_COMPILER_OPTIONS})
 
   add_sycl_to_target(${SOURCE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE_NAME}.cpp 

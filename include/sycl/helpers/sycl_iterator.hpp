@@ -227,7 +227,8 @@ class InputBufferIterator : public BufferIterator<T, Alloc> {
 
 template <typename Iterator1, typename Iterator2>
 inline bool operator==(Iterator1 a, Iterator2 b) {
-  return a.get_pos() == b.get_pos();
+  //return a.get_pos() == b.get_pos();
+  return a == b;
 }
 
 template <typename Iterator1, typename Iterator2>

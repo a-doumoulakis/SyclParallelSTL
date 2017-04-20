@@ -1,3 +1,6 @@
+
+find_package(Threads)
+
 file(GLOB EXAMPLE_FILES ./*.cpp)
 
 foreach(file ${EXAMPLE_FILES})
@@ -5,10 +8,16 @@ foreach(file ${EXAMPLE_FILES})
   message(STATUS " Adding ${SOURCE_NAME} ")
 
   include_directories(${COMPUTECPP_INCLUDE_DIRECTORY})
+  include_directories(${OpenCL_INCLUDE_DIRS})
 
   add_executable(${SOURCE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE_NAME}.cpp  )
+ 
   target_compile_options(${SOURCE_NAME} PUBLIC ${HOST_COMPILER_OPTIONS})
-
+  target_compile_options(${SOURCE_NAME} PUBLIC ${TRISYCL_COMPILE_FLAGS})
+  
+  target_link_libraries(${SOURCE_NAME} PUBLIC ${OpenCL_LIBRARIES})
+  target_link_libraries(${SOURCE_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+ 
   add_sycl_to_target(${SOURCE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE_NAME}.cpp 
     ${CMAKE_CURRENT_BINARY_DIR})
 

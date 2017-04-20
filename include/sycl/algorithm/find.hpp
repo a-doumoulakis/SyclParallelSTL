@@ -48,7 +48,8 @@ namespace impl {
 typedef struct search_result {
   bool result;
   int index;
-  search_result(bool r, int i) : result(r), index(i) {}
+  search_result(bool r, int i) : result(r), index(i) {};
+  search_result() : result(false), index(-1) {}
 } search_result;
 
 // Implementation of a generic find algorithn to be used for implementing

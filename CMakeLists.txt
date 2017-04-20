@@ -23,6 +23,11 @@ else()
   message(STATUS " Using triSYCL CMake")
   set(CMAKE_CXX_STANDARD 14)
   set(CXX_STANDARD_REQUIRED ON)
+  
+  
+  find_package( OpenCL REQUIRED )
+  include(FindOpenCL)
+  set(TRISYCL_COMPILE_FLAGS "-DTRISYCL_OPENCL")
 
   if(TRISYCL_INCLUDE_DIR)
     message(STATUS "Path to triSYCL include directory: " ${TRISYCL_INCLUDE_DIR})
