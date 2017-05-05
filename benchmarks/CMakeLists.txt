@@ -4,6 +4,7 @@ find_package(Threads)
 file(GLOB EXAMPLE_FILES ./*.cpp)
 
 foreach(file ${EXAMPLE_FILES})
+
   get_filename_component(SOURCE_NAME ${file} NAME_WE)
   message(STATUS " Adding ${SOURCE_NAME} ")
 
