@@ -86,7 +86,7 @@ class HostAccessorIterator : public SyclIterator {
   HostAccessorIterator(sycl_host_acc<T, Mode> &h, size_t pos)
       : SyclIterator(pos), h_(h) {}
 
-  template <typename U, int ModeU>
+  template <typename U, cl::sycl::access::mode ModeU>
   HostAccessorIterator(const HostAccessorIterator<U, ModeU> &hI)
       : SyclIterator(hI.get_pos()), h_(hI.h_) {}
 
@@ -138,7 +138,7 @@ class HostAccessorIterator : public SyclIterator {
  */
 template <typename T, typename Alloc>
 class BufferIterator : public SyclIterator {
- private:
+ protected:
   sycl_buffer_1d<T, Alloc> b_;
 
  public:
@@ -155,7 +155,7 @@ class BufferIterator : public SyclIterator {
 
   template <typename U>
   BufferIterator(const BufferIterator<U, Alloc> &hI)
-      : SyclIterator(hI.get_pos()), b_(hI.h_) {}
+      : SyclIterator(hI.get_pos()), b_(hI.b_) {}
 
   inline sycl_buffer_1d<T, Alloc> get_buffer() const { return b_; }
 
@@ -218,21 +218,20 @@ class InputBufferIterator : public BufferIterator<T, Alloc> {
 
   template <typename U>
   InputBufferIterator(const InputBufferIterator<U, Alloc> &hI)
-      : BufferIterator<T, Alloc>(hI.get_pos(), hI.h_) {}
+      : BufferIterator<T, Alloc>(hI.b_, hI.get_pos()) {}
 
   template <typename U>
   InputBufferIterator(const BufferIterator<U, Alloc> &hI)
-      : BufferIterator<T, Alloc>(hI.get_pos(), hI.h_) {}
+      : BufferIterator<T, Alloc>(hI.b_, hI.get_pos()) {}
 };
 
-template <typename Iterator1, typename Iterator2>
-inline bool operator==(Iterator1 a, Iterator2 b) {
-  //return a.get_pos() == b.get_pos();
-  return a == b;
+//template <typename Iterator1, typename Iterator2>
+inline bool operator==(SyclIterator a, SyclIterator b) {
+  return a.get_pos() == b.get_pos();
 }
 
-template <typename Iterator1, typename Iterator2>
-inline bool operator!=(Iterator1 a, Iterator2 b) {
+//template <typename Iterator1, typename Iterator2>
+inline bool operator!=(SyclIterator a, SyclIterator b) {
   return !(a == b);
 }
 
